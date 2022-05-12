@@ -1,0 +1,7 @@
+[
+    { "Los Angeles": {"Temperatures": 290.50077633, "weather disposition": "sky is clear" },
+    { "Denver": {"Temperatures": 286.12016027, "weather disposition": "scattered clouds" },
+    { "Atlanta": {"Temperatures": 293.78768108, "weather disposition": "sky is clear" },
+    { "Jacksonville": {"Temperatures": 298.97950285, "weather disposition": "sky is clear" },
+    { "Miami": {"Temperatures": 299.20306794, "weather disposition": "scattered clouds" },
+]

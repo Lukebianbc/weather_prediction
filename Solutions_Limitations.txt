@@ -1,0 +1,29 @@
+Solutions:
+
+I did this programming challenge on Jupyter notebook using python language. In general, I divide my all solution process into these steps: 1) know the data; 2) prepare the data; 3) Modeling; 4) predict; 5) bonus part.
+
+1) Know the data
+When I first get data, I tend to display some basic information about the datasets we have. For example, how many rows and columns does each dataset have, what data types are they, how many null values does each table have, etc. That’s what I do in the “know the data” part.
+
+2) Prepare the data
+Then I will spend some time processing the data, which is the basis of our project. The raw data I have is the weather condition and parameters of 5 different locations. The first thing I want to do is to deal with the null values. There are many null values in different tables, we can’t delete these data simply because it will hurt the data integrity. Given the data we have is grabbed by time, the data between right now and the last hour won’t have a huge difference, I fill in the null values using interpolate, which uses the previous data to fill in the null. Then I discover It’s complicated to process data in each location, so, I add another column named location and merge all the data together. After some manipulations, I got a “dataset” that is the basis for my next steps. 
+
+After getting the “dataset”, I did an EDA analysis. First, I count the unique values in the weather description column, which is one of our target values. I found there are some class imbalances in our data. Some extreme weather conditions have little data, which may cause a decrease in the accuracy of our model. Then, I draw a boxplot to observe the outliers, the data in “pressures” are not distributed evenly, and that is what we can improve by getting more training data. Also, I draw a heatmap to display the independence of our variables. Our dataset performs well in this part. 
+
+The next step I want to do is to add more features. Considering the weather will be totally different in different months (seasonal effects) and temperature will be different in different hours of the day (daylight and moonlight), I add the month and hour features. Also, I transfer the weather description into the numerical target and use one hot encode to transfer the location column. Meanwhile, I standardize the humidities and pressures columns (continuous variables, raise the model calculating speed). So, finally, I get the prepared dataset. It has 54775 rows, 11 features, and 2 target values. And I repeat all the processes on the data we want to predict.
+
+3) Modeling
+First, I split the dataset into training set and test set. There are two y values I need to predict. For weather description, I use the classification model. For the temperatures,  I use the regression model. In classification part, I try Random Forest, logistic regression, and Adaboost. After tuning the hyperparameters of these three models, I use the cross-validation method the compare the performance of three models. The accuracy of Random Forest is 0.55, logistic regression is 0.366, Adaboost is 0.365. So, I choose the Random Forest model as my weather description classification model and the accuracy on our test set is 0.576. In the regression part, I try linear regression and Random Forest regression. After tuning the hyperparameters and drawing the trend line to make sure our model won’t overfit or underfit, I also use the cross-validation method the compare the performance of the two models. The MSE of linear regression is 11.54, Random Forest is 6.387. So I choose the Random Forest as our final regression model. And the MSE on our test data is 5.374 and R2 is 0.935, which looks good. 
+
+4) predict
+After ensuring our final models, again, I feed the model with all the data and train the model. Finally, we use the model to predict the data we want.
+
+5) bonus part
+If we want to predict all 31 types of weather descriptions, given the number of each one, the big class imbalance will affect the result easily. So, I set up a new column called “new_class”. I divided 31 types of weather descriptions into five general types, they are 1:cloud, 2: foggy, 3：clear, 4: extreme, and 5: rain. Then use the Random Forest model to predict the general classes. Because I think people care more about if the extreme weather and rainy day happens than the ordinary weather situation like clear or cloudy. This way can slightly solve some class imbalance problems, but we are still hard to predict the extreme weather situation precisely because the number of them is still a small part of the data.
+
+
+Limitations:
+
+Here are some limitations to my programming challenge. The first part is the modeling part. 1) Random Forest creates a lot of trees and combines their outputs. To do so, this algorithm requires much more computational power and resources. 2) Random Forest requires much more time to train the data as it combines a lot of decision trees to determine the class. For example, I use grid search to tune the hyperparameters of Random Forest and It takes me 3 hours to run it. If we have millions of data in the future to train, it’s time-consuming.
+
+The second part is our dataset. 1) The training data is too small for 31 types of weather descriptions, especially some bad weather, which causes we can hardly predict them. This class imbalance can be improved by adding more training data. 2) There are some outliers in our features, which causes the uneven distribution of our data. 3) How to fill the null values. Here I use interpolate package to deal with the null values, but it still can be discussed how to deal with null values to raise the preciseness.
